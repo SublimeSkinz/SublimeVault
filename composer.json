@@ -1,0 +1,20 @@
+{
+    "name": "sublime/sublime-vault",
+    "authors": [
+        {
+            "name": "SublimeAmine",
+            "email": "amine@sublimeskinz.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sublime\\Vault\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "stable"
+}
