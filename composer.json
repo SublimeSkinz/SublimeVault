@@ -1,20 +1,17 @@
 {
-    "name": "sublime/sublime-vault",
-    "authors": [
-        {
-            "name": "SublimeAmine",
-            "email": "amine@sublimeskinz.com"
-        }
-    ],
+    "name": "sublimeskinz/sublime-vault",
+    "description" : "Get env params from Vault",
+    "type" : "library",
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.6",
         "ext-curl": "*"
     },
     "autoload": {
-        "psr-4": {
-            "Sublime\\Vault\\": "src/"
-        }
+        "files": [
+            "src/helper.php"
+        ]
     },
-    "license": "MIT",
-    "minimum-stability": "stable"
+    "license": [
+        "SublimeSkinz"
+    ]
 }
