@@ -1,15 +1,21 @@
 {
     "name": "sublimeskinz/sublime-vault",
-    "description" : "Get env params from Vault",
-    "type" : "library",
+    "description": "Get env params from Vault",
+    "type": "library",
     "require": {
         "php": ">=5.6",
         "ext-curl": "*"
     },
     "autoload": {
+        "classmap": [
+            "src"
+        ],
         "files": [
             "src/helper.php"
-        ]
+        ],
+        "psr-4": {
+            "Vendor\\SublimeSkinz\\SublimeVault\\": "/src"
+        }
     },
     "license": [
         "SublimeSkinz"
