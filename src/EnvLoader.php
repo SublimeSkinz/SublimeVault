@@ -14,7 +14,8 @@ class EnvLoader {
     }
 
     public function env($name, $default) {
-        $val = array_key_exists($_ENV[$name . "_VAULT"]) ? $this->fetchSecretFromVault(getenv($name . "_VAULT")) : getenv($name);
+
+        $val = array_key_exists($name . "_VAULT", $_ENV) ? $this->fetchSecretFromVault(getenv($name . "_VAULT")) : getenv($name);
 
         return strlen($val) > 0 ? $val : $default;
     }
@@ -24,7 +25,7 @@ class EnvLoader {
             $response = $this->vault->request('GET', '/v1/secret/' . $secret_path);
 
             if ($response->getStatusCode() != 200) {
-                return ;
+                return;
             }
 
             $r = json_decode($response->getBody()->getContents(), true);
@@ -33,27 +34,34 @@ class EnvLoader {
                 return (string) $r['data']['value'];
             }
         } catch (\Exception $e) {
-            return ;
+            return;
         }
     }
 
     private function fetchAppRoleCreds($bucket_name, $creds_path) {
-        $s3 = S3Client::factory();
+        $s3 = S3Client::factory([
+                    "region" => "eu-west-1",
+                    "version" => "2006-03-01"
+        ]);
 
         return json_decode($s3->getObject(array(
-                                "Bucket" => $bucket_name,
-                                "Key"    => $creds_path
-                          ))["Body"],
-                          true);
+                    "Bucket" => $bucket_name,
+                    "Key" => $creds_path
+                ))["Body"]);
     }
 
     private function getVaultTokenWithAppRole() {
-      $c = new Client();
-      return json_decode($c->request("POST", getenv("VAULT_ADDR") ."/auth/approle/login", $this->fetchAppRoleCreds(getenv("VAULT_BUCKET_NAME"), getenv("VAULT_CREDS_PATH"))), true)["auth"]["client_token"];
+        $c = new Client();
+        $options = [
+            "json" => $this->fetchAppRoleCreds(getenv("VAULT_BUCKET_NAME"), getenv("VAULT_CREDS_PATH"))
+        ];
+        $response = $c->request('POST', getenv("VAULT_ADDR") . "/v1/auth/approle/login", $options);
+        $r = json_decode($response->getBody()->getContents(), true);
+        return $r["auth"]["client_token"];
     }
 
-    private function getVaultTokenWithIAM(){
-        return ;
+    private function getVaultTokenWithIAM() {
+        return;
     }
 
 }
