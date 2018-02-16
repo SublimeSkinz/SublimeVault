@@ -2,9 +2,9 @@
 
 use SublimeSkinz\SublimeVault\EnvLoader;
 
-if (!function_exists('envS')) {
-    function envS($name, $default = '') {
+if (!function_exists('loadEnvironmentS')) {
+    function loadEnvironmentS() {
         $envLoader =  new EnvLoader();
-        return $envLoader->envS($name, $default);
+        return $envLoader->loadEnvironment();
     }
 }
