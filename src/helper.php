@@ -2,10 +2,12 @@
 
 use SublimeSkinz\SublimeVault\EnvLoader;
 
-if (!function_exists('envS')) {
-    function envS($name, $default = null)
-    {
-        $envLoader = new EnvLoader();
-        return $envLoader->envS($name, $default);
+if (!function_exists('loadEnvironmentS')) {
+    function loadEnvironmentS() {
+        if(!getenv('VAULT_ADDR')){
+            return;
+        }
+        $envLoader =  new EnvLoader();
+        return $envLoader->loadEnvironment();
     }
 }
