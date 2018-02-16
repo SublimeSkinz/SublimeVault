@@ -8,6 +8,15 @@ use Aws\S3\Exception\S3Exception;
 
 Class VaultClientFactory {
 
+    /**
+     * Create a vault client
+     * 
+     * @param string $addr
+     * @param string $authType
+     * @param string $bucketName
+     * @param string $credsPath
+     * @return Client
+     */
     public static function create($addr, $authType, $bucketName, $credsPath) {
 
         $factory = new VaultClientFactory();
@@ -25,6 +34,13 @@ Class VaultClientFactory {
         return new Client($options);
     }
 
+    /**
+     * Fetch appRole credentials from AWS bucket
+     * 
+     * @param string $bucketName
+     * @param string $credsPath
+     * @return json|null
+     */
     private function fetchAppRoleCreds($bucketName, $credsPath) {
         try {
             $s3 = S3Client::factory([
@@ -44,6 +60,14 @@ Class VaultClientFactory {
         }
     }
 
+    /**
+     * Get Vault token from appRole credentials
+     * 
+     * @param string $addr
+     * @param string $bucketName
+     * @param string $credsPath
+     * @return string|null
+     */
     private function getVaultTokenWithAppRole($addr, $bucketName, $credsPath) {
 
         if ($bucketName && $credsPath) {
@@ -64,6 +88,10 @@ Class VaultClientFactory {
         return null;
     }
 
+    /**
+     * To do
+     * @return type
+     */
     private function getVaultTokenWithIAM() {
         return;
     }
