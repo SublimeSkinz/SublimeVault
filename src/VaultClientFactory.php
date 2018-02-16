@@ -15,9 +15,12 @@ Class VaultClientFactory {
                 $factory->getVaultTokenWithIAM() :
                 $factory->getVaultTokenWithAppRole($addr, $bucketName, $credsPath);
 
+        if (is_null($vaultToken)) {
+            return null;
+        }
+
         $options['headers']['X-Vault-Token'] = $vaultToken;
         $options['base_uri'] = $addr;
-
         return new Client($options);
     }
 
@@ -27,20 +30,31 @@ Class VaultClientFactory {
                     "version" => "2006-03-01"
         ]);
 
-        return json_decode($s3->getObject(array(
-                    "Bucket" => $bucketName,
-                    "Key" => $credsPath
-                ))["Body"]);
+        if ($bucketName && $credsPath)
+            return json_decode($s3->getObject(array(
+                        "Bucket" => $bucketName,
+                        "Key" => $credsPath
+                    ))["Body"]);
+
+        return null;
     }
 
     private function getVaultTokenWithAppRole($addr, $bucketName, $credsPath) {
-        $c = new Client();
-        $options = [
-            "json" => $this->fetchAppRoleCreds($bucketName, $credsPath)
-        ];
-        $response = $c->request('POST', $addr . "/v1/auth/approle/login", $options);
-        $r = json_decode($response->getBody()->getContents(), true);
-        return $r["auth"]["client_token"];
+        try {
+            $creds = $this->fetchAppRoleCreds($bucketName, $credsPath);
+            if (is_null($creds)) {
+                return null;
+            }
+            $options = [
+                "json" => $creds
+            ];
+            $c = new Client();
+            $response = $c->request('POST', $addr . "/v1/auth/approle/login", $options);
+            $r = json_decode($response->getBody()->getContents(), true);
+            return $r["auth"]["client_token"];
+        } catch (Exception $exc) {
+            return null;
+        }
     }
 
     private function getVaultTokenWithIAM() {

@@ -21,14 +21,16 @@ class EnvLoader {
     }
 
     public function loadEnvironment() {
-        $envParams = $_ENV;
-        foreach ($envParams as $envParamKey => $value) {
-            if (str_contains($envParamKey, '_VAULT')) {
-                $s = str_replace('_VAULT', "", $envParamKey);
-                $r = $this->fetchSecretFromVault($value);
-                if (strlen($r) > 0) {
-                    Dotenv::makeMutable();
-                    Dotenv::setEnvironmentVariable($s, $r);
+        if (!is_null($this->vault)) {
+            $envParams = $_ENV;
+            foreach ($envParams as $envParamKey => $value) {
+                if (str_contains($envParamKey, '_VAULT')) {
+                    $s = str_replace('_VAULT', "", $envParamKey);
+                    $r = $this->fetchSecretFromVault($value);
+                    if (strlen($r) > 0) {
+                        Dotenv::makeMutable();
+                        Dotenv::setEnvironmentVariable($s, $r);
+                    }
                 }
             }
         }
