@@ -3,6 +3,7 @@
 namespace SublimeSkinz\SublimeVault;
 
 use SublimeSkinz\SublimeVault\VaultClientFactory;
+use GuzzleHttp\Exception\GuzzleException;
 use Dotenv;
 
 class EnvLoader {
@@ -64,7 +65,7 @@ class EnvLoader {
             if (isset($r['data']['value'])) {
                 return (string) $r['data']['value'];
             }
-        } catch (\Exception $e) {
+        } catch (GuzzleException $e) {
             return;
         }
     }

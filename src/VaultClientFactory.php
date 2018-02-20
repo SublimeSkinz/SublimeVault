@@ -1,12 +1,13 @@
 <?php
-
 namespace SublimeSkinz\SublimeVault;
 
 use GuzzleHttp\Client;
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+use GuzzleHttp\Exception\GuzzleException;
 
-Class VaultClientFactory {
+Class VaultClientFactory
+{
 
     /**
      * Create a vault client
@@ -17,13 +18,14 @@ Class VaultClientFactory {
      * @param string $credsPath
      * @return Client
      */
-    public static function create($addr, $authType, $bucketName, $credsPath) {
+    public static function create($addr, $authType, $bucketName, $credsPath)
+    {
 
         $factory = new VaultClientFactory();
 
         $vaultToken = $authType == 'iam' ?
-                $factory->getVaultTokenWithIAM() :
-                $factory->getVaultTokenWithAppRole($addr, $bucketName, $credsPath);
+            $factory->getVaultTokenWithIAM() :
+            $factory->getVaultTokenWithAppRole($addr, $bucketName, $credsPath);
 
         if (is_null($vaultToken)) {
             return null;
@@ -41,11 +43,12 @@ Class VaultClientFactory {
      * @param string $credsPath
      * @return json|null
      */
-    private function fetchAppRoleCreds($bucketName, $credsPath) {
+    private function fetchAppRoleCreds($bucketName, $credsPath)
+    {
         try {
             $s3 = S3Client::factory([
-                 "region" => "eu-west-1",
-                 "version" => "2006-03-01"
+                    "region" => "eu-west-1",
+                    "version" => "2006-03-01"
             ]);
 
             $response = $s3->getObject([
@@ -68,21 +71,26 @@ Class VaultClientFactory {
      * @param string $credsPath
      * @return string|null
      */
-    private function getVaultTokenWithAppRole($addr, $bucketName, $credsPath) {
+    private function getVaultTokenWithAppRole($addr, $bucketName, $credsPath)
+    {
 
         if ($bucketName && $credsPath) {
             $creds = $this->fetchAppRoleCreds($bucketName, $credsPath);
             if (is_null($creds)) {
                 return null;
             }
-            $options = [
-                "json" => $creds
-            ];
-            $c = new Client();
-            $response = $c->request('POST', $addr . "/v1/auth/approle/login", $options);
-            if ($response->getStatusCode() == 200) {
-                $r = json_decode($response->getBody()->getContents(), true); 
-                return $r["auth"]["client_token"];
+            try {
+                $options = [
+                    "json" => $creds
+                ];
+                $c = new Client();
+                $response = $c->request('POST', $addr . "/v1/auth/approle/login", $options);
+                if ($response->getStatusCode() == 200) {
+                    $r = json_decode($response->getBody()->getContents(), true);
+                    return $r["auth"]["client_token"];
+                }
+            } catch (GuzzleException $e) {
+                return null;
             }
         }
         return null;
@@ -92,8 +100,8 @@ Class VaultClientFactory {
      * To do
      * @return type
      */
-    private function getVaultTokenWithIAM() {
+    private function getVaultTokenWithIAM()
+    {
         return;
     }
-
 }
