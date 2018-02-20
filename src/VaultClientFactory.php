@@ -73,7 +73,6 @@ Class VaultClientFactory
      */
     private function getVaultTokenWithAppRole($addr, $bucketName, $credsPath)
     {
-
         if ($bucketName && $credsPath) {
             $creds = $this->fetchAppRoleCreds($bucketName, $credsPath);
             if (is_null($creds)) {

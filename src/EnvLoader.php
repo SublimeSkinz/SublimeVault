@@ -15,26 +15,13 @@ class EnvLoader {
     }
 
     /**
-     * Return value in vault if exist else return $default value
-     * @param string $name
-     * @param string $default
-     * @return string
-     */
-    public function env($name, $default) {
-
-        $val = array_key_exists($name . "_VAULT", $_ENV) ? $this->fetchSecretFromVault(getenv($name . "_VAULT")) : getenv($name);
-
-        return strlen($val) > 0 ? $val : $default;
-    }
-
-    /**
      * Load Environment variables from Vault
      */
-    public function loadEnvironment() {
+    public function loadSecureEnvironment() {
         if (!is_null($this->vault)) {
             $envParams = $_ENV;
             foreach ($envParams as $envParamKey => $value) {
-                if (str_contains($envParamKey, '_VAULT')) {
+                if (strpos($envParamKey, '_VAULT') !== false ) {
                     $s = str_replace('_VAULT', "", $envParamKey);
                     $r = $this->fetchSecretFromVault($value);
                     if (strlen($r) > 0) {
