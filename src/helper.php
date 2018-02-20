@@ -2,8 +2,8 @@
 
 use SublimeSkinz\SublimeVault\EnvLoader;
 
-if (!function_exists('loadEnvironmentS')) {
-    function loadEnvironmentS() {
+if (!function_exists('loadSecureEnvironment')) {
+    function loadSecureEnvironment() {
         if(!getenv('VAULT_ADDR')){
             return;
         }
