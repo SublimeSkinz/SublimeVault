@@ -2,11 +2,11 @@
 namespace SublimeSkinz\SublimeVault;
 
 use GuzzleHttp\Client;
-use SublimeSkinz\SublimeVault\VaultClient;
-use SublimeSkinz\SublimeVault\AwsClient;
+use SublimeSkinz\SublimeVault\VaultAuthClient;
 
 Class VaultClientFactory
 {
+
     /**
      * Create a vault client
      * 
@@ -18,12 +18,11 @@ Class VaultClientFactory
      */
     public static function create($addr, $authType, $bucketName, $credsPath)
     {
-        $s3Client = new AwsClient();
-        $vaultClient = new VaultClient($s3Client);
+        $vaultAuthClient = new VaultAuthClient();
 
         $vaultToken = $authType == 'iam' ?
-            $vaultClient->getVaultTokenWithIAM() :
-            $vaultClient->getVaultTokenWithAppRole($addr, $bucketName, $credsPath);
+            $vaultAuthClient->getVaultTokenWithIAM() :
+            $vaultAuthClient->getVaultTokenWithAppRole($addr, $bucketName, $credsPath);
 
         if (is_null($vaultToken)) {
             return null;

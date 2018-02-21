@@ -3,9 +3,20 @@ namespace SublimeSkinz\SublimeVault;
 
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+use Analog\Logger;
+use Analog\Handler\File;
 
 class AwsClient
 {
+    protected $logger;
+
+    public function __construct()
+    {
+        $logger = new Logger();
+        $logger->handler(File::init(__DIR__ . '/../logs/errors.log'));
+        $this->logger = $logger;
+    }
+
     /**
      * Fetch appRole credentials from AWS bucket
      * 
@@ -28,7 +39,7 @@ class AwsClient
 
             return json_decode($response["Body"]);
         } catch (S3Exception $e) {
-            //echo $e->getMessage() . "\n";       
+            $this->logger->alert($e->getMessage());
             return null;
         }
     }

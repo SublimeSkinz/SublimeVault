@@ -4,15 +4,21 @@ namespace SublimeSkinz\SublimeVault;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use SublimeSkinz\SublimeVault\AwsClient;
+use Analog\Logger;
+use Analog\Handler\File;
 
-class VaultClient
+class VaultAuthClient
 {
 
     protected $awsClient;
+    protected $logger;
 
-    public function __construct(AwsClient $awsClient)
+    public function __construct()
     {
-        $this->awsClient = $awsClient;
+        $this->awsClient = new AwsClient();
+        $logger = new Logger();
+        $logger->handler(File::init(__DIR__ . '/../logs/errors.log'));
+        $this->logger = $logger;
     }
 
     /**
@@ -41,6 +47,7 @@ class VaultClient
                     return $r["auth"]["client_token"];
                 }
             } catch (GuzzleException $e) {
+                $this->logger->alert($e->getMessage());
                 return null;
             }
         }
