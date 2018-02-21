@@ -4,20 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "476a113a0d39b74d51b8e5e04e269eb1",
+    "content-hash": "cc811c25a4a59a328f9b02187ee03e75",
     "packages": [
         {
-            "name": "aws/aws-sdk-php",
-            "version": "3.52.12",
+            "name": "analog/analog",
+            "version": "1.0.10-stable",
             "source": {
                 "type": "git",
-                "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ef20dc8e86aa87b76353bfb32a607684134d65c6"
+                "url": "https://github.com/jbroadway/analog.git",
+                "reference": "65dce6b5aff8c77307c783e607c04a35df8259d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ef20dc8e86aa87b76353bfb32a607684134d65c6",
-                "reference": "ef20dc8e86aa87b76353bfb32a607684134d65c6",
+                "url": "https://api.github.com/repos/jbroadway/analog/zipball/65dce6b5aff8c77307c783e607c04a35df8259d6",
+                "reference": "65dce6b5aff8c77307c783e607c04a35df8259d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "psr/log": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Analog": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Johnny Broadway",
+                    "email": "johnny@johnnybroadway.com",
+                    "homepage": "http://www.johnnybroadway.com/"
+                }
+            ],
+            "description": "PHP logging class that can be extended via closures. Includes several pre-built handlers including file, mail, syslog, HTTP post, and MongoDB.",
+            "homepage": "https://github.com/jbroadway/analog",
+            "keywords": [
+                "alerts",
+                "debug",
+                "debugging",
+                "error",
+                "log",
+                "logger",
+                "logging",
+                "syslog"
+            ],
+            "time": "2017-09-17T02:30:30+00:00"
+        },
+        {
+            "name": "aws/aws-sdk-php",
+            "version": "3.52.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aws/aws-sdk-php.git",
+                "reference": "6d2f46b55a9620e41e2fc71eb9993d43ebb352c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6d2f46b55a9620e41e2fc71eb9993d43ebb352c7",
+                "reference": "6d2f46b55a9620e41e2fc71eb9993d43ebb352c7",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +133,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-02-19T21:11:43+00:00"
+            "time": "2018-02-20T20:46:59+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -371,6 +420,53 @@
                 "response"
             ],
             "time": "2016-08-06T14:39:51+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

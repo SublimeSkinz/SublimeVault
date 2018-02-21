@@ -32,14 +32,16 @@ class EnvLoader {
             }
         }
     }
-
+    
+    
     /**
      * Fetch secret from vault
      * 
      * @param string $secretPath
      * @return string
      */
-    private function fetchSecretFromVault($secretPath) {
+    private function fetchSecretFromVault($secretPath)
+    {
         try {
             $response = $this->vault->request('GET', '/v1/secret/' . $secretPath);
 
@@ -56,5 +58,4 @@ class EnvLoader {
             return;
         }
     }
-
 }
