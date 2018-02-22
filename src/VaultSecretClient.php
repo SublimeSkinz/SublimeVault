@@ -3,8 +3,7 @@ namespace SublimeSkinz\SublimeVault;
 
 use GuzzleHttp\Exception\GuzzleException;
 use SublimeSkinz\SublimeVault\VaultClientFactory;
-use Analog\Logger;
-use Analog\Handler\File;
+use SublimeSkinz\SublimeVault\VaultLogger;
 
 class VaultSecretClient
 {
@@ -15,10 +14,7 @@ class VaultSecretClient
     public function __construct()
     {
         $this->vault = VaultClientFactory::create(getenv('VAULT_ADDR'), getenv('VAULT_AUTH_METHOD'), getenv("VAULT_BUCKET_NAME"), getenv("VAULT_CREDS_PATH"));
-
-        $logger = new Logger();
-        $logger->handler(File::init(__DIR__ . '/../logs/errors.log'));
-        $this->logger = $logger;
+        $this->logger = new VaultLogger();
     }
 
     /**
@@ -38,13 +34,13 @@ class VaultSecretClient
                 }
 
                 $r = json_decode($response->getBody()->getContents(), true);
-
-                if (isset($r['data']['value'])) {
-                    return (string) $r['data']['value'];
-                }
             } catch (GuzzleException $e) {
                 $this->logger->alert($e->getMessage());
                 return;
+            }
+
+            if (isset($r['data']['value'])) {
+                return (string) $r['data']['value'];
             }
         }
         return;

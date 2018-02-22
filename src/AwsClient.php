@@ -3,8 +3,7 @@ namespace SublimeSkinz\SublimeVault;
 
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
-use Analog\Logger;
-use Analog\Handler\File;
+use SublimeSkinz\SublimeVault\VaultLogger;
 
 class AwsClient
 {
@@ -12,9 +11,7 @@ class AwsClient
 
     public function __construct()
     {
-        $logger = new Logger();
-        $logger->handler(File::init(__DIR__ . '/../logs/errors.log'));
-        $this->logger = $logger;
+        $this->logger = new VaultLogger();
     }
 
     /**
@@ -28,8 +25,8 @@ class AwsClient
     {
         try {
             $s3 = S3Client::factory([
-                    "region" => "eu-west-1",
-                    "version" => "2006-03-01"
+                    "region" => getenv('VAULT_BUCKET_REGION'),
+                    "version" => getenv('AWS_SDK_VERSION')
             ]);
 
             $response = $s3->getObject([

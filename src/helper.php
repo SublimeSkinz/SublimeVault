@@ -8,6 +8,6 @@ if (!function_exists('loadSecureEnvironment')) {
             return;
         }
         $envLoader =  new EnvLoader();
-        return $envLoader->loadEnvironment();
+        return $envLoader->loadSecureEnvironment();
     }
 }

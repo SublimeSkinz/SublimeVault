@@ -4,21 +4,20 @@ namespace SublimeSkinz\SublimeVault;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use SublimeSkinz\SublimeVault\AwsClient;
-use Analog\Logger;
-use Analog\Handler\File;
+use SublimeSkinz\SublimeVault\VaultLogger;
 
 class VaultAuthClient
 {
 
     protected $awsClient;
     protected $logger;
+    protected $guzzleClient;
 
     public function __construct()
     {
         $this->awsClient = new AwsClient();
-        $logger = new Logger();
-        $logger->handler(File::init(__DIR__ . '/../logs/errors.log'));
-        $this->logger = $logger;
+        $this->guzzleClient = new Client();
+        $this->logger = new VaultLogger();
     }
 
     /**
@@ -37,14 +36,9 @@ class VaultAuthClient
                 return null;
             }
             try {
-                $options = [
-                    "json" => $creds
-                ];
-                $c = new Client();
-                $response = $c->request('POST', $addr . "/v1/auth/approle/login", $options);
+                $response = $this->guzzleClient->request('POST', $addr . "/v1/auth/approle/login", ["json" => $creds]);
                 if ($response->getStatusCode() == 200) {
-                    $r = json_decode($response->getBody()->getContents(), true);
-                    return $r["auth"]["client_token"];
+                    return json_decode($response->getBody()->getContents(), true)["auth"]["client_token"];
                 }
             } catch (GuzzleException $e) {
                 $this->logger->alert($e->getMessage());
