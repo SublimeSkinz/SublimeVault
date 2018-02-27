@@ -16,7 +16,7 @@ class AwsClient
 
     /**
      * Fetch appRole credentials from AWS bucket
-     * 
+     *
      * @param string $bucketName
      * @param string $credsPath
      * @return json|null

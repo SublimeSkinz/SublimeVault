@@ -7,7 +7,6 @@ use Dotenv;
 
 class FactoryIntegrationTests extends TestCase
 {
-
     protected $vaultAddr;
     protected $vaultCreds;
     protected $authType;

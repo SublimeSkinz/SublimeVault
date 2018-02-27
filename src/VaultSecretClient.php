@@ -7,7 +7,6 @@ use SublimeSkinz\SublimeVault\VaultLogger;
 
 class VaultSecretClient
 {
-
     protected $vault;
     protected $logger;
 
@@ -19,7 +18,7 @@ class VaultSecretClient
 
     /**
      * Fetch secret from vault
-     * 
+     *
      * @param string $secretPath
      * @return string
      */

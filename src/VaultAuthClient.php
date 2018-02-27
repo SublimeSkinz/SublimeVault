@@ -8,7 +8,6 @@ use SublimeSkinz\SublimeVault\VaultLogger;
 
 class VaultAuthClient
 {
-
     protected $awsClient;
     protected $logger;
     protected $guzzleClient;
@@ -22,7 +21,7 @@ class VaultAuthClient
 
     /**
      * Get Vault token from appRole credentials
-     * 
+     *
      * @param string $addr
      * @param string $bucketName
      * @param string $credsPath

@@ -7,7 +7,6 @@ use Dotenv;
 
 class EnvLoaderIntegrationTest extends TestCase
 {
-
     public function setUp()
     {
         Dotenv::load(__DIR__ . '/../', '.env');
@@ -40,7 +39,7 @@ class EnvLoaderIntegrationTest extends TestCase
         Dotenv::makeMutable();
         Dotenv::setEnvironmentVariable('VAULT_CREDS_PATH', 'xxx');
 
-        //instanciate class 
+        //instanciate class
         $envLoader = new EnvLoader();
         $envLoader->loadSecureEnvironment();
 
@@ -58,7 +57,7 @@ class EnvLoaderIntegrationTest extends TestCase
         Dotenv::makeMutable();
         Dotenv::setEnvironmentVariable('VAULT_BUCKET_NAME', 'xxx');
 
-        //instanciate class 
+        //instanciate class
         $envLoader = new EnvLoader();
         $envLoader->loadSecureEnvironment();
 
@@ -77,7 +76,7 @@ class EnvLoaderIntegrationTest extends TestCase
         Dotenv::setEnvironmentVariable('SASDB_USERNAME_VAULT', 'xxx');
         Dotenv::setEnvironmentVariable('SASDB_PASSWORD_VAULT', 'xxx');
 
-        //instanciate class 
+        //instanciate class
         $envLoader = new EnvLoader();
         $envLoader->loadSecureEnvironment();
 

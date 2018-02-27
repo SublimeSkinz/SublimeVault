@@ -6,7 +6,6 @@ use Dotenv;
 
 class EnvLoader
 {
-
     public function __construct()
     {
         $this->vaultSecretClient = new VaultSecretClient();

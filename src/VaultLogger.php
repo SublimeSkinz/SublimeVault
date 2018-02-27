@@ -7,7 +7,6 @@ use Analog\Handler\File;
 
 class VaultLogger extends Logger
 {
-
     public function __construct()
     {
         $logger = new Logger();

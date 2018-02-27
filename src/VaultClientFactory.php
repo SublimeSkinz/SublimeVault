@@ -4,12 +4,11 @@ namespace SublimeSkinz\SublimeVault;
 use GuzzleHttp\Client;
 use SublimeSkinz\SublimeVault\VaultAuthClient;
 
-Class VaultClientFactory
+class VaultClientFactory
 {
-
     /**
      * Create a vault client
-     * 
+     *
      * @param string $addr
      * @param string $authType
      * @param string $bucketName
