@@ -1,39 +1,31 @@
 <?php
-
 namespace SublimeSkinz\SublimeVault;
 
-use GuzzleHttp\Client;
+use SublimeSkinz\SublimeVault\VaultSecretClient;
+use Dotenv;
 
 class EnvLoader
 {
-    /**
-     * @param string $name
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function envS($name, $default = null)
+    public function __construct()
     {
-        $options['base_uri'] = getenv('VAULT_ADDR');
-        $options['headers']['X-Vault-Token'] = getenv('VAULT_TOKEN');
+        $this->vaultSecretClient = new VaultSecretClient();
+    }
 
-        $vaultClient = new Client($options);
-
-        try {
-            $response = $vaultClient->request('GET', '/v1/secret/' . $name);
-
-            if ($response->getStatusCode() != 200) {
-                return $default;
+    /**
+     * Load Environment variables from Vault
+     */
+    public function loadSecureEnvironment()
+    {
+        $envParams = $_ENV;
+        foreach ($envParams as $envParamKey => $value) {
+            if (strpos($envParamKey, '_VAULT') !== false) {
+                $s = str_replace('_VAULT', "", $envParamKey);
+                $r = $this->vaultSecretClient->fetchSecretFromVault($value);
+                if (strlen($r) > 0) {
+                    Dotenv::makeMutable();
+                    Dotenv::setEnvironmentVariable($s, $r);
+                }
             }
-
-            $r = json_decode($response->getBody()->getContents(), true);
-
-            if (isset($r['data']['value'])) {
-                return (string) $r['data']['value'];
-            }
-        } catch (\Exception $e) {
         }
-
-        return $default;
     }
 }

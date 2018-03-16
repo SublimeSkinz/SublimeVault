@@ -1,2 +1,4 @@
-composer.lock
-/vendor/
+/vendor
+.env
+errors.log
+/tests/report
