@@ -16,14 +16,13 @@ class EnvLoader
      */
     public function loadSecureEnvironment()
     {
-        $envParams = $_ENV;
+        $envParams = array_merge($_SERVER, $_ENV);
         foreach ($envParams as $envParamKey => $value) {
             if (strpos($envParamKey, '_VAULT') !== false) {
                 $s = str_replace('_VAULT', "", $envParamKey);
                 $r = $this->vaultSecretClient->fetchSecretFromVault($value);
                 if (strlen($r) > 0) {
-                    Dotenv::makeMutable();
-                    Dotenv::setEnvironmentVariable($s, $r);
+                     putenv("$s=$r");
                 }
             }
         }
