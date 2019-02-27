@@ -20,9 +20,11 @@ class EnvLoader
         foreach ($envParams as $envParamKey => $value) {
             if (strpos($envParamKey, '_VAULT') !== false) {
                 $s = str_replace('_VAULT', "", $envParamKey);
-                $r = $this->vaultSecretClient->fetchSecretFromVault($value);
-                if (strlen($r) > 0) {
-                     putenv("$s=$r");
+                if (!getenv($s)) {
+                    $r = $this->vaultSecretClient->fetchSecretFromVault($value);
+                    if (strlen($r) > 0) {
+                        putenv("$s=$r");
+                    }
                 }
             }
         }
