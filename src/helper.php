@@ -9,6 +9,6 @@ if (!function_exists('envSecure')) {
             return;
         }
         $envLoader =  new EnvLoader();
-        return $envLoader->envS($s);
+        return $envLoader->envSecure($s);
     }
 }
