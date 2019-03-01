@@ -10,22 +10,16 @@ class EnvLoader
     {
         $this->vaultSecretClient = new VaultSecretClient();
     }
-
+    
     /**
      * Load Environment variables from Vault
      */
-    public function loadSecureEnvironment()
-    {
-        $envParams = $_ENV;
-        foreach ($envParams as $envParamKey => $value) {
-            if (strpos($envParamKey, '_VAULT') !== false) {
-                $s = str_replace('_VAULT', "", $envParamKey);
-                $r = $this->vaultSecretClient->fetchSecretFromVault($value);
-                if (strlen($r) > 0) {
-                    Dotenv::makeMutable();
-                    Dotenv::setEnvironmentVariable($s, $r);
-                }
-            }
+    public function envSecure($s) {
+        $value = getenv($s);
+        if (strpos($value, '_VAULT') !== false) {
+            $envKey = str_replace('_VAULT', "", $value);
+            return $this->vaultSecretClient->fetchSecretFromVault($envKey);
         }
+        return getenv($s);
     }
 }
